@@ -17,9 +17,9 @@
   <!-- BEGIN MAIN -->
   <form id="MainMenu">
     <block>
-    <prompt bargein="true">
-      Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
-    </prompt>
+      <prompt bargein="true">
+        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+      </prompt>
     </block>
 
     <!-- BEGIN GET STOP NUMBER -->
@@ -44,9 +44,11 @@
 
         <var name="stopno" />
         <assign name="stopno" expr="stopno$.interpretation" />
-
+        <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
+        
         <prompt>
-          The stop number you have selected is <value expr="stopno" />
+          The stop number you have selected is <value expr="stopno" />,
+          Converted, that is <value expr="convertNumber(stopno)" />
           <break strength="medium"/>
         </prompt>
       </filled>
@@ -75,9 +77,11 @@
 
         <var name="busno" />
         <assign name="busno" expr="busno$.interpretation" />
+        <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
 
         <prompt>
-          The bus number you have selected is <value expr="busno" />
+          The bus number you have selected is <value expr="busno" />.
+          Converted, that is <value expr="convertNumber(busno)" />
           <break strength="medium"/>
         </prompt>
       </filled>
@@ -89,13 +93,13 @@
 
 
   <form id="Help">
-  <block>
-    <prompt bargein="false">
-      This is a speech enabled bus information service. You will be guided through the steps of setting your location
-      and desired routes. Let's start at the beginning.
-    </prompt>
-    <goto next="#MainMenu" />
-  </block>
+    <block>
+      <prompt bargein="false">
+        This is a speech enabled bus information service. You will be guided through the steps of setting your location
+        and desired routes. Let's start at the beginning.
+      </prompt>
+      <goto next="#MainMenu" />
+    </block>
   </form>
 
 </vxml>

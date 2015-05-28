@@ -1,19 +1,3 @@
-function divideHundreds(number) {
-    // turn a number like '550' into '5 50'
-    // so it sounds more natural
-    if (number.length == 3) {
-        var dividedNumber = number.charAt(0);
-        dividedNumber += ' ';
-        for(var i = 1; i < number.length; i++)
-        {
-            dividedNumber += number.charAt(i);
-        }
-        return dividedNumber;
-    }
-    return number;
-}
-
-
 function convertNumber(num_str) {
     // convert eg. "two hundred" => 200
     substrings = num_str.split(" ");
@@ -78,14 +62,4 @@ function convertNumber(num_str) {
     // just in case of spacey errors
     converted = converted.replace("undefined", "");
     return converted;
-}
-
-
-function getRealTime(stopno, busno) {
-    // http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/<id>.xml?key=<key>
-    var url_base = "http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_";
-    var api_key = "ae9a6989-9371-433b-9914-d8c2f8575b5d";
-    var url = url_base + stopno + ".xml?key=" + api_key;
-    
-    
 }
