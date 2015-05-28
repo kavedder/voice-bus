@@ -55,8 +55,8 @@ function convertNumber(num_str) {
     var has_hundred=false;
     for (var i=0; i<substrings.length; i++) {
         substring = substrings[i];
-        converted_substring = numConvert[substring]
-        converted += converted_substring
+        converted_substring = numConvert[substring];
+        converted += converted_substring;
         last_substring=substring;
         if (substring == "hundred") {
             has_hundred = true;
