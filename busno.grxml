@@ -5,22 +5,6 @@
     <item repeat="0-1"> the </item>
     <item>
       <one-of>
-        <!-- special case for full hundreds -->
-        <item>
-          <item repeat="0-1">
-            <item> one </item>
-            <item> two </item>
-            <item> three </item>
-            <item> four </item>
-            <item> five </item>
-            <item> six </item>
-            <item> seven </item>
-            <item> eight </item>
-            <item> nine </item>
-          </item>
-          <item> hundred </item>
-        </item>
-        
         <!-- each number separately
              (eg. one oh five)
         -->
@@ -59,6 +43,7 @@
               <item> nine </item>
             </one-of>
           </item>
+          <item repeat="0-1"> hundred </item>
           <!-- END opt first digit -->
           
           <!-- BEGIN second two digits -->
