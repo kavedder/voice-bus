@@ -1,0 +1,14 @@
+##################################################
+# realt-time arrival
+
+http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/<id>.xml?key=<key>
+
+<response>
+  <data class="entryWithReferences">
+    <entry class="stopWithArrivalsAndDepartures">
+      <arrivalsAndDepartures>
+        <arrivalAndDeparture>
+          <routeShortName>32</routeShortName>
+          <tripHeadsign>SEATTLE CENTER FREMONT</tripHeadsign>
+          <scheduledArrivalTime>1432827491000</scheduledArrivalTime>
+          <predictedArrivalTime>1432827529000</predictedArrivalTime>

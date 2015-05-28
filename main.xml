@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+  <meta name="maintainer" content="kvedder@uw.edu"/>
+
+
+  <link next="#MainMenu">
+    <!-- The XML grammar for the main menu. -->
+    <grammar src="main_menu.grxml" type="application/grammar-xml"/>
+  </link>
+
+  <link next="#Help">
+    <!-- The XML grammar for the help menu. -->
+    <grammar src="help.grxml" type="application/grammar-xml"/>
+  </link>
+
+
+  <!-- BEGIN MAIN -->
+  <form id="MainMenu">
+    <block>
+    <prompt bargein="true">
+      Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+    </prompt>
+    </block>
+
+    <!-- BEGIN GET STOP NUMBER -->
+    <field name="stopno">
+      <grammar src="stopno.grxml" type="application/grammar-xml"/>
+      <prompt>
+        Please say your stop number.
+      </prompt>
+
+      <noinput>
+        I did not hear anything. The stop numbers are shown on the bus stop flag, or on the timetable mounted near the stop. Please try again.
+        <reprompt/>
+      </noinput>
+
+      <nomatch>
+        I did not recognize what you said. The stop numbers are shown on the bus stop flag, or on the timetable mounted near the stop. Please try again.
+        <reprompt/>
+      </nomatch>
+
+
+      <filled namelist="stopno.interpretation">
+
+        <var name="stopno" />
+        <assign name="stopno" expr="stopno$.interpretation" />
+
+        <prompt>
+          The stop number you have selected is <value expr="stopno" />
+          <break strength="medium"/>
+        </prompt>
+      </filled>
+    </field>
+    <!-- END GET STOP NUMBER -->
+
+    <!-- BEGIN GET BUS NUMBER -->
+    <field name="busno">
+      <grammar src="busno.grxml" type="application/grammar-xml"/>
+      <prompt>
+        Please say your bus number.
+      </prompt>
+
+      <noinput>
+        I did not hear anything. Please try again.
+        <reprompt/>
+      </noinput>
+
+      <nomatch>
+        I did not recognize what you said. Please try again.
+        <reprompt/>
+      </nomatch>
+
+
+      <filled namelist="busno.interpretation">
+
+        <var name="busno" />
+        <assign name="busno" expr="busno$.interpretation" />
+
+        <prompt>
+          The bus number you have selected is <value expr="busno" />
+          <break strength="medium"/>
+        </prompt>
+      </filled>
+    </field>
+    <!-- END GET BUS NUMBER -->
+
+  </form>
+  <!-- END MAIN -->
+
+
+  <form id="Help">
+  <block>
+    <prompt bargein="false">
+      This is a speech enabled bus information service. You will be guided through the steps of setting your location
+      and desired routes. Let's start at the beginning.
+    </prompt>
+    <goto next="#MainMenu" />
+  </block>
+  </form>
+
+</vxml>

@@ -1,0 +1,126 @@
+<?xml version= "1.0"?>
+<grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
+  
+  <rule id="TOPLEVEL" scope="public">
+    <item repeat="0-1"> the </item>
+    <item>
+      <one-of>
+        <!-- special case for full hundreds -->
+        <item>
+          <item repeat="0-1">
+            <item> one </item>
+            <item> two </item>
+            <item> three </item>
+            <item> four </item>
+            <item> five </item>
+            <item> six </item>
+            <item> seven </item>
+            <item> eight </item>
+            <item> nine </item>
+          </item>
+          <item> hundred </item>
+        </item>
+        
+        <!-- each number separately
+             (eg. one oh five)
+        -->
+        <item repeat="1-3">
+          <one-of>
+            <item> oh </item>
+            <item> zero </item>
+            <item> one </item>
+            <item> two </item>
+            <item> three </item>
+            <item> four </item>
+            <item> five </item>
+            <item> six </item>
+            <item> seven </item>
+            <item> eight </item>
+            <item> nine </item>
+          </one-of>
+        </item>
+        
+        <!-- optional first digit, then
+             two digits together (eg. one-fifty, fifty-one,
+             one-fifty-one)
+        -->
+        <item>
+          <!-- BEGIN opt first digit -->
+          <item repeat="0-1">
+            <one-of>
+              <item> one </item>
+              <item> two </item>
+              <item> three </item>
+              <item> four </item>
+              <item> five </item>
+              <item> six </item>
+              <item> seven </item>
+              <item> eight </item>
+              <item> nine </item>
+            </one-of>
+          </item>
+          <!-- END opt first digit -->
+          
+          <!-- BEGIN second two digits -->
+          <item>
+            <one-of>
+              
+              <!-- teens -->
+              <item>
+                <one-of>
+                  <item> eleven </item>
+                  <item> twelve </item>
+                  <item> thirteen </item>
+                  <item> fourteen </item>
+                  <item> fifteen </item>
+                  <item> sixteen </item>
+                  <item> seventeen </item>
+                  <item> eighteen </item>
+                  <item> nineteen </item>
+                </one-of>
+              </item>
+              
+              <!-- else -->
+              <item>
+                <!-- BEGIN -ties -->
+                <item>
+                  <one-of>
+                    <item> twenty </item>
+                    <item> thirty </item>
+                    <item> forty </item>
+                    <item> fifty </item>
+                    <item> sixty </item>
+                    <item> seventy </item>
+                    <item> eighty </item>
+                    <item> ninety </item>
+                  </one-of>
+                </item>
+                <!-- END -ties -->
+
+                <!-- BEGIN opt last digit -->
+                <item repeat="0-1">
+                  <one-of>
+                    <item> one </item>
+                    <item> two </item>
+                    <item> three </item>
+                    <item> four </item>
+                    <item> five </item>
+                    <item> six </item>
+                    <item> seven </item>
+                    <item> eight </item>
+                    <item> nine </item>
+                  </one-of>
+                </item>
+                <!-- END opt last digit -->
+                
+              </item>
+              
+            </one-of>
+          </item>
+          <!-- END second two digits -->
+        </item>
+      </one-of>
+    </item>
+  </rule>
+
+</grammar>
