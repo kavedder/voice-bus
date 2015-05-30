@@ -95,7 +95,7 @@
     <field name="verifystopno">
       <grammar src="yesno.grxml" type="application/grammar-xml"/>
       <prompt>
-        I heard <value expr="externalStopNo" />. Is that correct?
+        I heard <value expr="application.externalStopNo" />. Is that correct?
       </prompt>
 
       <catch event="noinput nomatch">
