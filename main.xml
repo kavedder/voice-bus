@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version = "2.1">
   <meta name="maintainer" content="kvedder@uw.edu"/>
-
+  <var name="internalStopNo" />
+  <var name="externalStopNo" />
+  <var name="internalBusNo" />
+  <var name="externalBusNo" />
+  <var name="URL" />
+  <var name="xml_data" />
 
   <link next="#MainMenu">
     <!-- The XML grammar for the main menu. -->
@@ -18,7 +23,8 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+        <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
+        Hi.
       </prompt>
     </block>
 
@@ -42,13 +48,30 @@
 
       <filled namelist="stopno.interpretation">
 
-        <var name="stopno" />
-        <assign name="stopno" expr="stopno$.interpretation" />
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
-        
+        <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <!--<script src="fetchUrlData.js" fetchhint="prefetch" fetchtimeout="10s" />-->
+        <assign name="application.externalStopNo" expr="stopno$.interpretation" />
+        <assign name="application.internalStopNo" expr="convertNumber(application.externalStopNo)" />
+        <assign name="application.URL" expr="getStopUrl(application.internalStopNo)" />
+
+        <data name="doc" srcexpr="application.URL" />
+        <assign name="application.xml_data" expr="doc.documentElement" />
+
+        <!-- for some reason this wouldn't work in a separate file :-( TODO: fix that -->
+        <script>
+          <![CDATA[
+                   function getStatus(doc) {
+                   response = doc.getElementsByTagName("text").item(0).firstChild.data;
+                   if ( response == "OK" ) {
+                   return "true";
+                   }
+                   return "false";
+                   }
+          ]]>
+        </script>
         <prompt>
-          The stop number you have selected is <value expr="stopno" />,
-          Converted, that is <value expr="convertNumber(stopno)" />
+          <value expr="getStatus(application.xml_data)" />
           <break strength="medium"/>
         </prompt>
       </filled>
