@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<vxml version = "2.1">
+<vxml version = "2.1" application="root.xml">
   <meta name="maintainer" content="kvedder@uw.edu"/>
-  <var name="internalStopNo" />
-  <var name="externalStopNo" />
-  <var name="internalBusNo" />
-  <var name="externalBusNo" />
-  <var name="URL" />
-  <var name="xml_data" />
-  <var name="isValidUrl" />
 
   <link next="#MainMenu">
     <!-- The XML grammar for the main menu. -->
@@ -53,7 +46,7 @@
         <reprompt/>
       </nomatch>
 
-      <filled namelist="stopno.interpretation">
+      <filled namelist="stopno$.interpretation">
 
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
@@ -93,15 +86,31 @@
   <!-- BEGIN VERIFY STOP NUMBER -->
   <form id="VerifyStopNo">
     <field name="verifystopno">
-      <grammar src="yesno.grxml" type="application/grammar-xml"/>
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
       <prompt>
         I heard <value expr="application.externalStopNo" />. Is that correct?
       </prompt>
-
-      <catch event="noinput nomatch">
+      
+      <noinput>
         Sorry, I didn't quite catch that.
         <reprompt/>
-      </catch>
+      </noinput>
+      
+      <nomatch>
+        Sorry, I didn't quite catch that.
+        <reprompt/>
+      </nomatch>
+      
+      <filled namelist="verifystopno">
+        <prompt> <value expr="verifystopno$.utterance" /> </prompt>
+        <if cond="response=='no'">
+          <prompt> I'm sorry! Let's try again </prompt>
+          <goto next="main.xml#StopNo" />
+          <else />
+          <prompt> Okay! </prompt>
+          <goto next="main.xml#BusNo" />
+        </if>
+      </filled>
     </field>
   </form>
 
@@ -126,15 +135,15 @@
       </nomatch>
 
 
-      <filled namelist="busno.interpretation">
+      <filled namelist="busno$.interpretation">
 
         <var name="busno" />
-        <assign name="application.busno" expr="busno$.interpretation" />
+        <assign name="application.externalBusNo" expr="busno$.interpretation" />
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <assign name="application.internalBusNo" expr="convertNumber(application.externalBusNo)" />
 
         <prompt>
-          The bus number you have selected is <value expr="busno" />.
-          Converted, that is <value expr="convertNumber(busno)" />
+          The bus number you have selected is <value expr="application.internalBusNo" />.
           <break strength="medium"/>
         </prompt>
       </filled>

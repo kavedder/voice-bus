@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+  <meta name="maintainer" content="kvedder@uw.edu"/>
+  <var name="internalStopNo" />
+  <var name="externalStopNo" />
+  <var name="internalBusNo" />
+  <var name="externalBusNo" />
+  <var name="URL" />
+  <var name="xml_data" />
+  <var name="isValidUrl" />
+</vxml>
