@@ -50,63 +50,18 @@
 
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <!-- for some reason this wouldn't work in a separate file :-( TODO: fix that -->
-        <script>
-          <![CDATA[
-                   function getStatus(doc) {
-                   var response = doc.getElementsByTagName("text").item(0).firstChild.data;
-                   if ( response == "OK" ) {
-                   return "true"; }
-                   return "false";
-                   }
-          ]]>
-        </script>
+        <script src="fetchUrlData.js" fetchhint="prefetch" fetchtimeout="10s" />
 
         <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
         <assign name="application.writtenStopNo" expr="convertNumber(spokenStopNo,'foo')" />
-        <assign name="application.stopURL" expr="getStopUrl(writtenStopNo)" />
+        <assign name="application.stopURL" expr="getStopUrl(application.writtenStopNo)" />
+        <assign name="application.arrDepUrl" value="getArrDepUrl(application.writtenStopNo)" />
 
         <data name="doc" srcexpr="stopURL" />
         <assign name="application.xml_data" expr="doc.documentElement" />
         <assign name="application.isValidUrl" expr="getStatus(xml_data)" />
 
         <if cond="isValidUrl=='true'">
-          <!-- for some reason this wouldn't work in a separate file :-( TODO: fix that -->
-          <script>
-            <![CDATA[
-                     function getStopLoc(doc) {
-                     var wordConvert = {
-                     "Ln": "Lane",
-                     "St": "Street",
-                     "St.": "Street",
-                     "Blvd": "Boulevard",
-                     "Ave": "Avenue",
-                     "Wy": "Way",
-                     "Pkwy": "Parkway",
-                     "Rd": "Road",
-                     "NE": "northeast",
-                     "NW": "northwest",
-                     "SE": "southeast",
-                     "SW": "southwest",
-                     "N": "north",
-                     "W": "west",
-                     "S": "south",
-                     "E": "east",
-                     "Rd": "Road"
-                     }
-                     // well, this is fragile...
-                     var stop = doc.getElementsByTagName("entry").item(0).getElementsByTagName("name").item(0).firstChild.data;
-                     var stop_words = stop.split(" ");
-                     var converted = "";
-                     for (var i=0; i<stop_words.length; i++) {
-                     word = stop_words[i]
-                     convertedWord = wordConvert[word] || word;
-                     converted += " " + convertedWord;
-                     }
-                     return converted
-                     }
-            ]]>
-          </script>
           <assign name="application.stopLoc" expr="getStopLoc(xml_data)" />
           <goto next="main.xml#VerifyStopNo" />
 
@@ -148,6 +103,7 @@
           <goto next="main.xml#StopNo" />
           <else />
           <prompt> Okay! </prompt>
+          <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
           <goto next="main.xml#BusNo" />
         </if>
       </filled>
@@ -179,11 +135,17 @@
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="getRoutes.js" fetchhint="prefetch" fetchtimeout="10s" />
         <assign name="application.writtenBusNo" expr="convertNumber(application.spokenBusNo, application.busType)" />
+
+        <data name="doc" srcexpr="application.ArrDepUrl" />
+        <assign name="arr_dep_xml_data" expr="doc.documentElement" />
+        <assign name="routelist" expr="getRoutes(arr_dep_xml_data, application.writtenBusNo)" />
 
         <if cond="application.busType=='number'">
           <prompt>
             The bus number you have selected is <value expr="application.writtenBusNo" />.
+            <value expr="routelist" />
           </prompt>
           <elseif cont="application.busType=='letter'" />
           <prompt>
