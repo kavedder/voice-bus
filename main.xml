@@ -49,15 +49,17 @@
       <filled namelist="stopno$.interpretation">
 
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="getStopUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="getArrivalUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="fetchUrlData.js" fetchhint="prefetch" fetchtimeout="10s" />
 
         <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
         <assign name="application.writtenStopNo" expr="convertNumber(spokenStopNo,'foo')" />
-        <assign name="application.stopURL" expr="getStopUrl(application.writtenStopNo)" />
-        <assign name="application.arrDepUrl" value="getArrDepUrl(application.writtenStopNo)" />
+        <assign name="application.stopUrl" expr="getStopUrl(application.writtenStopNo)" />
+        <assign name="application.arrivalUrl" expr="getArrivalUrl(application.writtenStopNo)" />
 
-        <data name="doc" srcexpr="stopURL" />
+
+        <data name="doc" srcexpr="stopUrl" />
         <assign name="application.xml_data" expr="doc.documentElement" />
         <assign name="application.isValidUrl" expr="getStatus(xml_data)" />
 
@@ -138,9 +140,9 @@
         <script src="getRoutes.js" fetchhint="prefetch" fetchtimeout="10s" />
         <assign name="application.writtenBusNo" expr="convertNumber(application.spokenBusNo, application.busType)" />
 
-        <data name="doc" srcexpr="application.ArrDepUrl" />
+        <data name="doc" srcexpr="application.arrivalUrl" />
         <assign name="arr_dep_xml_data" expr="doc.documentElement" />
-        <assign name="routelist" expr="getRoutes(arr_dep_xml_data, application.writtenBusNo)" />
+        <assign name="routelist" expr="getRoutes(arr_dep_xml_data, application.writtenBusNo, application.spokenBusNo)" />
 
         <if cond="application.busType=='number'">
           <prompt>

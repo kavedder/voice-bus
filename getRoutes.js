@@ -1,4 +1,4 @@
-function getRoutes(doc, bus_id) {
+function getRoutes(doc, bus_id, spoken_form) {
     // TODO: the "all" version!
     var routes = doc.getElementsByTagName("arrivalAndDeparture");
     var arr = [];
@@ -6,15 +6,36 @@ function getRoutes(doc, bus_id) {
     var destination;
     for (i=0; i<routes.length; i++) {
         var element = routes.item(i);
-        var short_name = element.getElementsByTagName("routeShortName").item(0).firstChild.data;
+        try {
+            var short_name = element.getElementsByTagName("routeShortName").item(0).firstChild.data;
+        }
+        catch(err) {
+            var short_name = "foo";
+        }
         if (short_name == bus_id) {
+            return "YEAH!";
             if (!destination) {
                 // haven't grabbed the destination yet
-                longName = element.getElementsByTagName("routeLongName").item(0).firstChild.data;
-                destination = element.getElementsByTagName("tripHeadsign").item(0).firstChild.data;
+                try {
+                    longName = element.getElementsByTagName("routeLongName").item(0).firstChild.data;
+                }
+                catch(err) {
+                    longName = makeLong(spoken_form);
+                }
+                try {
+                    destination = element.getElementsByTagName("tripHeadsign").item(0).firstChild.data;
+                }
+                catch(err) {
+                    destination = "Mars";
+                }
             }
             //predictedArrivalTime
-            var arrTime = element.getElementsByTagName("predictedArrivalTime").item(0).firstChild.data;
+            try {
+                var arrTime = element.getElementsByTagName("predictedArrivalTime").item(0).firstChild.data;
+            }
+            catch(err) {
+                return "Boobles.";
+            }
             var time = getTimeDiff(arrTime);
             if (time) {
                 arr.push(time);
@@ -23,17 +44,26 @@ function getRoutes(doc, bus_id) {
     }
     var arrival_pl = "arrivals";
     var verb = "are";
-    if (arr.length == 0) {
-        return "I'm sorry. I can't find any upcoming arrivals of the " + bus_id + " at this stop.";
+    if (arr.length === 0) {
+        return ("I'm sorry. I can't find any upcoming arrivals of the " + bus_id + " at this stop.");
     }
     else if (arr.length == 1) {
-        bus_pl = "arrival";
+        arrival_pl = "arrival";
     }
-    var s = "The next " + arrival_pl + " of the " + longName " to " + destination + " " + verb;
+    var s = "The next " + arrival_pl + " of the " + longName + " to " + destination + " " + verb;
     for (var i=0; i<arr.length; i++) {
-        s += " in about " + arr[i] ", ";
+        s += " in about " + arr[i] + ", ";
     }
     return s;
+}
+
+function makeLong(spoken_form) {
+    var substrings = spoken_form.split(" ");
+    var first_word = substrings[0];
+    if (first_word != "the" ) {
+        substrings.unshift("the")
+    }
+    return substrings.join(" ");
 }
 
 function getTimeDiff(timestr) {
@@ -55,5 +85,5 @@ function getTimeDiff(timestr) {
     else if (20 < diff_remain < 40) {
         return diff_mins + "and a half minutes";
     }
-    return diff_mins + 1 " minutes";
+    return diff_mins + 1 + " minutes";
 }

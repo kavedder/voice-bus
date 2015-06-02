@@ -5,8 +5,9 @@
   <var name="spokenStopNo" />
   <var name="writtenBusNo" />
   <var name="spokenBusNo" />
-  <var name="stopURL" />
-  <var name="arrDepURL" />
+  <var name="stopUrl" />
+  <var name="arrivalUrl" />
+  <assign name="application.arrivalUrl" expr="foobar" />
   <var name="xml_data" />
   <var name="isValidUrl" />
   <var name="stopLoc" />
