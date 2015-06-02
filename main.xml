@@ -61,20 +61,58 @@
                    }
           ]]>
         </script>
-        
-        <assign name="application.externalStopNo" expr="stopno$.interpretation" />
-        <assign name="application.internalStopNo" expr="convertNumber(externalStopNo)" />
-        <assign name="application.URL" expr="getStopUrl(internalStopNo)" />
 
-        <data name="doc" srcexpr="URL" />
+        <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
+        <assign name="application.writtenStopNo" expr="convertNumber(spokenStopNo,'foo')" />
+        <assign name="application.stopURL" expr="getStopUrl(writtenStopNo)" />
+
+        <data name="doc" srcexpr="stopURL" />
         <assign name="application.xml_data" expr="doc.documentElement" />
         <assign name="application.isValidUrl" expr="getStatus(xml_data)" />
-        
+
         <if cond="isValidUrl=='true'">
+          <!-- for some reason this wouldn't work in a separate file :-( TODO: fix that -->
+          <script>
+            <![CDATA[
+                     function getStopLoc(doc) {
+                     var wordConvert = {
+                     "Ln": "Lane",
+                     "St": "Street",
+                     "St.": "Street",
+                     "Blvd": "Boulevard",
+                     "Ave": "Avenue",
+                     "Wy": "Way",
+                     "Pkwy": "Parkway",
+                     "Rd": "Road",
+                     "NE": "northeast",
+                     "NW": "northwest",
+                     "SE": "southeast",
+                     "SW": "southwest",
+                     "N": "north",
+                     "W": "west",
+                     "S": "south",
+                     "E": "east",
+                     "Rd": "Road"
+                     }
+                     // well, this is fragile...
+                     var stop = doc.getElementsByTagName("entry").item(0).getElementsByTagName("name").item(0).firstChild.data;
+                     var stop_words = stop.split(" ");
+                     var converted = "";
+                     for (var i=0; i<stop_words.length; i++) {
+                     word = stop_words[i]
+                     convertedWord = wordConvert[word] || word;
+                     converted += " " + convertedWord;
+                     }
+                     return converted
+                     }
+            ]]>
+          </script>
+          <assign name="application.stopLoc" expr="getStopLoc(xml_data)" />
           <goto next="main.xml#VerifyStopNo" />
+
           <else />
           <prompt>
-            I'm sorry, <value expr="application.externalStopNo" /> does not seem to be a valid bus stop. Please try again.
+            I'm sorry, <value expr="application.spokenStopNo" /> does not seem to be a valid bus stop. Please try again.
           </prompt>
           <goto next="main.xml#StopNo" />
         </if>
@@ -88,21 +126,23 @@
     <field name="verifystopno">
       <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
       <prompt>
-        I heard <value expr="application.externalStopNo" />. Is that correct?
+        I heard <value expr="application.spokenStopNo" />,
+        which is <value expr="application.stopLoc" />.
+        Is that correct?
       </prompt>
-      
+
       <noinput>
         Sorry, I didn't quite catch that.
         <reprompt/>
       </noinput>
-      
+
       <nomatch>
         Sorry, I didn't quite catch that.
         <reprompt/>
       </nomatch>
-      
+
       <filled namelist="verifystopno">
-        <prompt> <value expr="verifystopno$.utterance" /> </prompt>
+        <var name="response" expr="verifystopno$.utterance.response" />
         <if cond="response=='no'">
           <prompt> I'm sorry! Let's try again </prompt>
           <goto next="main.xml#StopNo" />
@@ -121,7 +161,7 @@
     <field name="busno">
       <grammar src="busno.grxml" type="application/grammar-xml"/>
       <prompt>
-        Please say your bus number.
+        Please say the bus number you are looking for, or say all buses.
       </prompt>
 
       <noinput>
@@ -136,16 +176,24 @@
 
 
       <filled namelist="busno$.interpretation">
-
-        <var name="busno" />
-        <assign name="application.externalBusNo" expr="busno$.interpretation" />
+        <assign name="application.busType" expr="busno$.interpretation.bus_type" />
+        <assign name="application.spokenBusNo" expr="busno$.utterance" />
         <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <assign name="application.internalBusNo" expr="convertNumber(application.externalBusNo)" />
+        <assign name="application.writtenBusNo" expr="convertNumber(application.spokenBusNo, application.busType)" />
 
-        <prompt>
-          The bus number you have selected is <value expr="application.internalBusNo" />.
-          <break strength="medium"/>
-        </prompt>
+        <if cond="application.busType=='number'">
+          <prompt>
+            The bus number you have selected is <value expr="application.writtenBusNo" />.
+          </prompt>
+          <elseif cont="application.busType=='letter'" />
+          <prompt>
+            The bus line you have selected is <value expr="application.writtenBusNo" />.
+          </prompt>
+          <else />
+          <prompt>
+            Fetching all buses, yo.
+          </prompt>
+        </if>
       </filled>
     </field>
     <!-- END GET BUS NUMBER -->

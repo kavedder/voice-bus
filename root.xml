@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version = "2.1">
   <meta name="maintainer" content="kvedder@uw.edu"/>
-  <var name="internalStopNo" />
-  <var name="externalStopNo" />
-  <var name="internalBusNo" />
-  <var name="externalBusNo" />
-  <var name="URL" />
+  <var name="writtenStopNo" />
+  <var name="spokenStopNo" />
+  <var name="writtenBusNo" />
+  <var name="spokenBusNo" />
+  <var name="stopURL" />
+  <var name="arrDepURL" />
   <var name="xml_data" />
   <var name="isValidUrl" />
+  <var name="stopLoc" />
+  <var name="busType" />
 </vxml>

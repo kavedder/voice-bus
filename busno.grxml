@@ -1,7 +1,49 @@
 <?xml version= "1.0"?>
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
-  
+
   <rule id="TOPLEVEL" scope="public">
+    <item repeat="0-1"> <ruleref uri="fluff.grxml#begin_fluff" /> </item>
+    <one-of>
+      <item> <ruleref uri="#all_buses" /> <tag> out.bus_type="all"; </tag> </item>
+      <item> <ruleref uri="#bus_by_letter" /> <tag> out.bus_type="letter"; </tag> </item>
+      <item> <ruleref uri="#bus_by_number" /> <tag> out.bus_type="number"; </tag> </item>
+    </one-of>
+    <item repeat="0-1"> <ruleref uri="fluff.grxml#end_fluff" /> </item>
+  </rule>
+
+  <rule id="all_buses" scope="public">
+    <one-of>
+      <item> all </item>
+      <item> any </item>
+    </one-of>
+    <item repeat="0-1">
+      <one-of>
+        <item> of the buses </item>
+        <item> the buses </item>
+        <item> bus </item>
+        <item> buses </item>
+      </one-of>
+    </item>
+  </rule>
+
+
+  <rule id="bus_by_letter" scope="public">
+    <item repeat="0-1"> the </item>
+    <item repeat="0-1"> rapid ride </item>
+    <item>
+      <one-of>
+        <item> A </item>
+        <item> B </item>
+        <item> C </item>
+        <item> D </item>
+        <item> E </item>
+        <item> F </item>
+      </one-of>
+    </item>
+    <item repeat="0-1"> line </item>
+  </rule>
+
+  <rule id="bus_by_number" scope="public">
     <item repeat="0-1"> the </item>
     <item>
       <one-of>
@@ -23,7 +65,7 @@
             <item> nine </item>
           </one-of>
         </item>
-        
+
         <!-- optional first digit, then
              two digits together (eg. one-fifty, fifty-one,
              one-fifty-one)
@@ -45,11 +87,11 @@
           </item>
           <item repeat="0-1"> hundred </item>
           <!-- END opt first digit -->
-          
+
           <!-- BEGIN second two digits -->
           <item>
             <one-of>
-              
+
               <!-- teens -->
               <item>
                 <one-of>
@@ -64,7 +106,7 @@
                   <item> nineteen </item>
                 </one-of>
               </item>
-              
+
               <!-- else -->
               <item>
                 <!-- BEGIN -ties -->
@@ -97,14 +139,24 @@
                   </one-of>
                 </item>
                 <!-- END opt last digit -->
-                
+
               </item>
-              
+
             </one-of>
           </item>
           <!-- END second two digits -->
         </item>
       </one-of>
+
+      <item repeat="0-1">
+        <item> express </item>
+        <item> local </item>
+        <item>
+          <item> night </item>
+          <item repeat="0-1"> owl </item>
+        </item>
+      </item>
+
     </item>
   </rule>
 

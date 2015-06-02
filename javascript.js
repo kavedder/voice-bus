@@ -88,3 +88,23 @@ function getStopUrl(stopno) {
     var url = url_base + stopno + ".xml?key=" + api_key;
     return url;
 }
+
+
+function getStopLoc(doc) {
+    var wordConvert = {
+        "Ln": "Lane",
+        "St": "Street",
+        "St.": "Street",
+        "Blvd": "Boulevard"
+    }
+    // well, this is fragile...
+    var stop = doc.getElementsByTagName("entry").item(0).getElementsByTagName("name").item(0).firstChild.data;
+    var stop_words = stop.split(" ");
+    var converted = "";
+    for (var i=0; i<stop_words.length; i++) {
+        word = stop_words[i]
+        convertedWord = wordConvert[word] || word;
+        converted += " " + convertedWord;
+    }
+    return converted
+}

@@ -1,0 +1,23 @@
+<?xml version= "1.0"?>
+<grammar xml:lang="en-us" xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="begin_fluff" scope="public">
+    <item>
+      <one-of>
+        <item> give me </item>
+        <item> can I have </item>
+        <item> can I get </item>
+      </one-of>
+    </item>
+    <item repeat="0-1"> the </item>
+  </rule>
+
+  <rule id="end_fluff" scope="public">
+    <item>
+      please
+    </item>
+  </rule>
+
+
+
+</grammar>
