@@ -36,7 +36,7 @@ var lineLetters = [
     "A", "B", "C", "D", "E", "F"
     ]
 
-function convertNumber(num_str, bus_type) {
+function convertBus(str, bus_type) {
     // "two hundred" => 200
     // "the rapid ride A" => A Line
     // "any bus" => null
@@ -48,7 +48,7 @@ function convertNumber(num_str, bus_type) {
         // but we had to come here to convert numbers,
         // anyway, and this way we don't have to have
         // so many crazy return values
-        var substrings = num_str.split(" ");
+        var substrings = str.split(" ");
         var lineLetter;
         for (var i=0; i<substrings.length; i++) {
             var substring = substrings[i];
@@ -60,7 +60,7 @@ function convertNumber(num_str, bus_type) {
         return lineLetter + " Line";
     }
     else {
-        var substrings = num_str.split(" ");
+        var substrings = str.split(" ");
         var converted="";
         var last_substring;
         var has_hundred=false;

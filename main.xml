@@ -21,6 +21,7 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
+        <!-- TODO: uncomment -->
         <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
         Hi.
       </prompt>
@@ -48,23 +49,23 @@
 
       <filled namelist="stopno$.interpretation">
 
-        <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getStopUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getArrivalUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="fetchUrlData.js" fetchhint="prefetch" fetchtimeout="10s" />
 
         <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
-        <assign name="application.writtenStopNo" expr="convertNumber(spokenStopNo,'foo')" />
+        <assign name="application.writtenStopNo" expr="convertBus(application.spokenStopNo,'foo')" />
         <assign name="application.stopUrl" expr="getStopUrl(application.writtenStopNo)" />
         <assign name="application.arrivalUrl" expr="getArrivalUrl(application.writtenStopNo)" />
 
 
         <data name="doc" srcexpr="stopUrl" />
-        <assign name="application.xml_data" expr="doc.documentElement" />
-        <assign name="application.isValidUrl" expr="getStatus(xml_data)" />
+        <assign name="application.xmlData" expr="doc.documentElement" />
+        <assign name="application.isValidUrl" expr="getStatus(application.xmlData)" />
 
         <if cond="isValidUrl=='true'">
-          <assign name="application.stopLoc" expr="getStopLoc(xml_data)" />
+          <assign name="application.stopLoc" expr="getStopLoc(application.xmlData)" />
           <goto next="main.xml#VerifyStopNo" />
 
           <else />
@@ -136,22 +137,21 @@
       <filled namelist="busno$.interpretation">
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
-        <script src="convertNumber.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getRoutes.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <assign name="application.writtenBusNo" expr="convertNumber(application.spokenBusNo, application.busType)" />
+        <assign name="application.writtenBusNo" expr="convertBus(application.spokenBusNo, application.busType)" />
 
         <data name="doc" srcexpr="application.arrivalUrl" />
-        <assign name="arr_dep_xml_data" expr="doc.documentElement" />
-        <assign name="routelist" expr="getRoutes(arr_dep_xml_data, application.writtenBusNo, application.spokenBusNo)" />
+        <assign name="application.arrivalXmlData" expr="doc.documentElement" />
+        <assign name="routelist" expr="getRoutes(application.arrivalXmlData, application.writtenBusNo, application.spokenBusNo)" />
 
         <if cond="application.busType=='number'">
           <prompt>
-            The bus number you have selected is <value expr="application.writtenBusNo" />.
             <value expr="routelist" />
           </prompt>
-          <elseif cont="application.busType=='letter'" />
+          <elseif cond="application.busType=='letter'" />
           <prompt>
-            The bus line you have selected is <value expr="application.writtenBusNo" />.
+            <value expr="routelist" />
           </prompt>
           <else />
           <prompt>

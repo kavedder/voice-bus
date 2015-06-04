@@ -1,22 +1,27 @@
 <?xml version= "1.0"?>
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
-  
+
   <rule id="TOPLEVEL" scope="public">
-    <item repeat="1-6">
-      <one-of>
-        <item> oh </item>
-        <item> zero </item>
-        <item> one </item>
-        <item> two </item>
-        <item> three </item>
-        <item> four </item>
-        <item> five </item>
-        <item> six </item>
-        <item> seven </item>
-        <item> eight </item>
-        <item> nine </item>
-      </one-of>
-    </item>
+    <one-of>
+      <!-- shorter stops, like 430, can be said like "four thirty" -->
+      <item> <ruleref uri="busno.grxml#bus_by_number" /> </item>
+      <!-- one would expect 74820 to be pronounced "seven four eight two oh" -->
+      <item repeat="1-6">
+        <one-of>
+          <item> oh </item>
+          <item> zero </item>
+          <item> one </item>
+          <item> two </item>
+          <item> three </item>
+          <item> four </item>
+          <item> five </item>
+          <item> six </item>
+          <item> seven </item>
+          <item> eight </item>
+          <item> nine </item>
+        </one-of>
+      </item>
+    </one-of>
   </rule>
 
 </grammar>

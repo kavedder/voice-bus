@@ -7,8 +7,8 @@
   <var name="spokenBusNo" />
   <var name="stopUrl" />
   <var name="arrivalUrl" />
-  <assign name="application.arrivalUrl" expr="foobar" />
-  <var name="xml_data" />
+  <var name="xmlData" />
+  <var name="arrivalXmlData" />
   <var name="isValidUrl" />
   <var name="stopLoc" />
   <var name="busType" />
