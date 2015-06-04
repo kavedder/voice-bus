@@ -1,13 +1,13 @@
 <?xml version= "1.0"?>
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
-  
+
   <rule id="TOPLEVEL" scope="public">
     <one-of>
       <item> <ruleref uri="#yes" /> <tag> out.response="yes"; </tag> </item>
       <item> <ruleref uri="#no" /> <tag> out.response="no"; </tag> </item>
     </one-of>
   </rule>
-  
+
   <rule id="yes" scope="public">
     <one-of>
       <item> yes </item>
@@ -20,6 +20,7 @@
       <item> yup </item>
       <item> uh huh </item>
     </one-of>
+    <item repeat="0-1"> please </item>
   </rule>
 
   <rule id="no" scope="public">
@@ -27,8 +28,10 @@
       <item> no </item>
       <item> nope </item>
     </one-of>
+    <item repeat="0-1"> thanks </item>
+    <item repeat="0-1"> thank you </item>
   </rule>
 
 
-  
+
 </grammar>

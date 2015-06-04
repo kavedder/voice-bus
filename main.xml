@@ -12,6 +12,14 @@
     <grammar src="help.grxml" type="application/grammar-xml"/>
   </link>
 
+  <link next="#Goodbye">
+    <!-- The XML grammar for the help menu. -->
+    <grammar src="goodbye.grxml" type="application/grammar-xml"/>
+    <block>
+      <goto next="main.xml#End" />
+    </block>
+  </link>
+
   <!-- Each module is in its own form, so that we can easily use
        gotos to navigate around. This is not a super clean vanilla
        call flow, but gives us more control.
@@ -21,9 +29,7 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        <!-- TODO: uncomment -->
-        <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
-        Hi.
+        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
       </prompt>
       <goto next="#StopNo" />
     </block>
@@ -52,7 +58,7 @@
         <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getStopUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
         <script src="getArrivalUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="fetchUrlData.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="fetchUrlData1.js" fetchhint="prefetch" fetchtimeout="10s" />
 
         <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
         <assign name="application.writtenStopNo" expr="convertBus(application.spokenStopNo,'foo')" />
@@ -100,13 +106,12 @@
       </nomatch>
 
       <filled namelist="verifystopno">
-        <var name="response" expr="verifystopno$.utterance.response" />
+        <var name="response" expr="verifystopno$.interpretation.response" />
         <if cond="response=='no'">
-          <prompt> I'm sorry! Let's try again </prompt>
+          <prompt> I'm sorry! Let's try again. </prompt>
           <goto next="main.xml#StopNo" />
           <else />
           <prompt> Okay! </prompt>
-          <script src="getUrls.js" fetchhint="prefetch" fetchtimeout="10s" />
           <goto next="main.xml#BusNo" />
         </if>
       </filled>
@@ -138,31 +143,106 @@
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
         <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="getRoutes.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="getRoutes7.js" fetchhint="prefetch" fetchtimeout="10s" />
         <assign name="application.writtenBusNo" expr="convertBus(application.spokenBusNo, application.busType)" />
 
         <data name="doc" srcexpr="application.arrivalUrl" />
         <assign name="application.arrivalXmlData" expr="doc.documentElement" />
-        <assign name="routelist" expr="getRoutes(application.arrivalXmlData, application.writtenBusNo, application.spokenBusNo)" />
+        <assign name="routelist" expr="getRoutes(application.arrivalXmlData, application.writtenBusNo, application.busType)" />
 
-        <if cond="application.busType=='number'">
+        <if cond="application.busType=='all'">
           <prompt>
             <value expr="routelist" />
           </prompt>
-          <elseif cond="application.busType=='letter'" />
-          <prompt>
-            <value expr="routelist" />
-          </prompt>
+          <goto next="main.xml#MoreStops" />
           <else />
           <prompt>
-            Fetching all buses, yo.
+            <value expr="routelist" />
           </prompt>
+          <goto next="main.xml#MoreBuses" />
         </if>
       </filled>
     </field>
-    <!-- END GET BUS NUMBER -->
-
   </form>
+  <!-- END GET BUS NUMBER -->
+
+  <!-- BEGIN MORE BUSES -->
+  <form id="MoreBuses">
+    <field name="morebuses">
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
+      <prompt>
+        Would you like to hear more arrivals for this stop?
+      </prompt>
+
+      <noinput>
+        Sorry, I didn't quite catch that.
+        <reprompt/>
+      </noinput>
+
+      <nomatch>
+        Sorry, I didn't quite catch that.
+        <reprompt/>
+      </nomatch>
+
+      <filled namelist="morebuses">
+        <var name="response" expr="morebuses$.interpretation.response" />
+        <if cond="response=='no'">
+          <goto next="main.xml#MoreStops" />
+          <else />
+          <prompt> Okay! </prompt>
+          <goto next="main.xml#BusNo" />
+        </if>
+      </filled>
+    </field>
+  </form>
+
+  <!-- END MORE BUSES -->
+
+  <!-- BEGIN MORE STOPS -->
+  <form id="MoreStops">
+    <field name="morestops">
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
+      <prompt>
+        Would you like to hear arrivals for a different stop?
+      </prompt>
+
+      <noinput>
+        Sorry, I didn't quite catch that.
+        <reprompt/>
+      </noinput>
+
+      <nomatch>
+        Sorry, I didn't quite catch that.
+        <reprompt/>
+      </nomatch>
+
+      <filled namelist="morestops">
+        <var name="response" expr="morestops$.interpretation.response" />
+        <if cond="response=='no'">
+          <goto next="main.xml#End" />
+          <else />
+          <prompt> Okay! </prompt>
+          <goto next="main.xml#StopNo" />
+        </if>
+      </filled>
+    </field>
+  </form>
+
+  <!-- END MORE STOPS -->
+
+  <!-- BEGIN END -->
+
+  <form id="End">
+    <block>
+      <prompt>
+        Goodbye!
+      </prompt>
+      <disconnect />
+    </block>
+  </form>
+
+  <!-- END END :-) -->
+
   <!-- END MAIN -->
 
 

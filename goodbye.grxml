@@ -1,0 +1,9 @@
+<?xml version= "1.0"?>
+<grammar xml:lang="en-US" root ="LINKGRAM">
+  <rule id="LINKGRAM" scope="public">
+    <one-of>
+      <item>goodbye</item>
+      <item repeat="1-2">bye</item>
+    </one-of>
+  </rule>
+</grammar>
