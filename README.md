@@ -13,4 +13,4 @@ Currently (unless things have gone wrong) up and running at (206) 457-2372, or t
 - find information about a particular stop, courtesy of StopInfo
 
 ### Notes
-Don't judge the Javascript until you've tried working with VoiceXML.
+Don't judge the Javascript until you've tried working with VoiceXML :sob:
