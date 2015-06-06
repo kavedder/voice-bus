@@ -3,7 +3,7 @@
 ### A VoiceXML Interface to [OneBusAway](http://pugetsound.onebusaway.org/p/OneBusAwayApiService.action) and [StopInfo](http://stopinfo.pugetsound.onebusaway.org/)
 ##### For up-to-the-second transit information for the city of Seattle
 
-Currently (unless things have gone wrong) up and running at (206) 457-2372, or toll-free on Skype at +990009369996121529. Try it out!
+Currently (unless things have gone wrong) up and running at (206) 457-2372, or toll-free on Skype at [+990009369996121529](skype:+990009369996121529?call). Try it out!
 
 ### Features
 - DTMF (keypad) interface
