@@ -7,6 +7,8 @@
   <var name="spokenBusNo" />
   <var name="stopUrl" />
   <var name="arrivalUrl" />
+  <var name="stopinfoUrl" />
+  <var name="stopinfoData" />
   <var name="xmlData" />
   <var name="arrivalXmlData" />
   <var name="isValidUrl" />

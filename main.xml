@@ -4,17 +4,17 @@
 
   <link next="#MainMenu">
     <!-- The XML grammar for the main menu. -->
-    <grammar src="main_menu.grxml" type="application/grammar-xml"/>
+    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="0" />
   </link>
 
   <link next="#Help">
     <!-- The XML grammar for the help menu. -->
-    <grammar src="help.grxml" type="application/grammar-xml"/>
+    <grammar src="help.grxml" type="application/grammar-xml" maxage="0" />
   </link>
 
   <link next="#Goodbye">
     <!-- The XML grammar for the help menu. -->
-    <grammar src="goodbye.grxml" type="application/grammar-xml"/>
+    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
     <block>
       <goto next="main.xml#End" />
     </block>
@@ -29,7 +29,9 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+        <!-- TODO -->
+        <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
+        Hi.
       </prompt>
       <goto next="#StopNo" />
     </block>
@@ -38,9 +40,10 @@
   <!-- BEGIN GET STOP NUMBER -->
   <form id="StopNo">
     <field name="stopno">
-      <grammar src="stopno.grxml" type="application/grammar-xml"/>
+      <grammar src="stopno.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
-        Please say your stop number.
+        Please say or key in your stop number.
       </prompt>
 
       <noinput>
@@ -55,10 +58,7 @@
 
       <filled namelist="stopno$.interpretation">
 
-        <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="getStopUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="getArrivalUrl.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="fetchUrlData1.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
 
         <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
         <assign name="application.writtenStopNo" expr="convertBus(application.spokenStopNo,'foo')" />
@@ -88,7 +88,8 @@
   <!-- BEGIN VERIFY STOP NUMBER -->
   <form id="VerifyStopNo">
     <field name="verifystopno">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         I heard <value expr="application.spokenStopNo" />,
         which is <value expr="application.stopLoc" />.
@@ -96,12 +97,12 @@
       </prompt>
 
       <noinput>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </nomatch>
 
@@ -112,7 +113,7 @@
           <goto next="main.xml#StopNo" />
           <else />
           <prompt> Okay! </prompt>
-          <goto next="main.xml#BusNo" />
+          <goto next="main.xml#GetStopinfo" />
         </if>
       </filled>
     </field>
@@ -120,12 +121,59 @@
 
   <!-- END VERIFY STOP NUMBER -->
 
+  <!-- BEGIN GET STOPINFO -->
+  <form id="GetStopinfo">
+    <field name="getstopinfo">
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
+      <prompt>
+        Would you like to hear information about this stop?
+      </prompt>
+
+      <noinput>
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
+        <reprompt/>
+      </noinput>
+
+      <nomatch>
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
+        <reprompt/>
+      </nomatch>
+
+      <filled namelist="getstopinfo">
+        <var name="response" expr="getstopinfo$.interpretation.response" />
+        <if cond="response=='no'">
+
+          <prompt> All right. </prompt>
+          <goto next="main.xml#BusNo" />
+
+          <else />
+
+          <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+          <assign name="application.stopinfoUrl" expr="getStopinfoUrl(application.writtenStopNo)" />
+          <data name="doc" srcexpr="application.stopinfoUrl" />
+          <assign name="application.stopinfoData" expr="doc.documentElement" />
+          <assign name="application.stopInfo" expr="returnStopinfoInfo(application.stopinfoData)" />
+
+
+          <prompt> Here is the stop information for stop number <value expr="application.spokenStopNo" />. </prompt>
+          <value expr="application.stopInfo" />
+
+          <goto next="main.xml#BusNo" />
+        </if>
+      </filled>
+    </field>
+  </form>
+
+  <!-- END GET STOPINFO -->
+
   <!-- BEGIN GET BUS NUMBER -->
   <form id="BusNo">
     <field name="busno">
-      <grammar src="busno.grxml" type="application/grammar-xml"/>
+      <grammar src="busno.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
-        Please say the bus number you are looking for, or say all buses.
+        Please say or key in the bus number you are looking for, or say all buses or press star to hear all buses.
       </prompt>
 
       <noinput>
@@ -142,8 +190,7 @@
       <filled namelist="busno$.interpretation">
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
-        <script src="convertBus.js" fetchhint="prefetch" fetchtimeout="10s" />
-        <script src="getRoutes7.js" fetchhint="prefetch" fetchtimeout="10s" />
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
         <assign name="application.writtenBusNo" expr="convertBus(application.spokenBusNo, application.busType)" />
 
         <data name="doc" srcexpr="application.arrivalUrl" />
@@ -169,18 +216,19 @@
   <!-- BEGIN MORE BUSES -->
   <form id="MoreBuses">
     <field name="morebuses">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Would you like to hear more arrivals for this stop?
       </prompt>
 
       <noinput>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </nomatch>
 
@@ -201,18 +249,19 @@
   <!-- BEGIN MORE STOPS -->
   <form id="MoreStops">
     <field name="morestops">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml"/>
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Would you like to hear arrivals for a different stop?
       </prompt>
 
       <noinput>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        Sorry, I didn't quite catch that.
+        Sorry, I didn't quite catch that. You can also key in one for yes, or two for no.
         <reprompt/>
       </nomatch>
 
