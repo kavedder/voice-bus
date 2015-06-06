@@ -2,6 +2,7 @@
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
 
   <rule id="TOPLEVEL" scope="public">
+    <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
     <one-of>
       <!-- shorter stops, like 430, can be said like "four thirty" -->
       <item> <ruleref uri="busno.grxml#bus_by_number" /> </item>
@@ -22,6 +23,7 @@
         </one-of>
       </item>
     </one-of>
+    <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
   </rule>
 
 </grammar>

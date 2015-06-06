@@ -2,13 +2,13 @@
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
 
   <rule id="TOPLEVEL" scope="public">
-    <item repeat="0-1"> <ruleref uri="fluff.grxml#begin_fluff" /> </item>
+    <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
     <one-of>
       <item> <ruleref uri="#all_buses" /> <tag> out.bus_type="all"; </tag> </item>
       <item> <ruleref uri="#bus_by_letter" /> <tag> out.bus_type="letter"; </tag> </item>
       <item> <ruleref uri="#bus_by_number" /> <tag> out.bus_type="number"; </tag> </item>
     </one-of>
-    <item repeat="0-1"> <ruleref uri="fluff.grxml#end_fluff" /> </item>
+    <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
   </rule>
 
   <rule id="all_buses" scope="public">
