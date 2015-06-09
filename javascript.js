@@ -274,7 +274,12 @@ function cvtDest(dest) {
 }
 
 function makeLong(busno) {
-    var chars = busno.toString().trim().split('');
+    try {
+        var chars = busno.toString().trim().split('');
+    }
+    catch(e) {
+        return busno;
+    }
     var express = "";
     // figure out if it is an express
     if (chars[chars.length-1] == "E") {

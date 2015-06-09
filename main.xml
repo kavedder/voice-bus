@@ -12,12 +12,9 @@
     <grammar src="help.grxml" type="application/grammar-xml" maxage="0" />
   </link>
 
-  <link next="#Goodbye">
+  <link next="#End">
     <!-- The XML grammar for the help menu. -->
     <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
-    <block>
-      <goto next="main.xml#End" />
-    </block>
   </link>
 
 
@@ -30,8 +27,7 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
-        Hi
+        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
       </prompt>
       <goto next="#StopNo" />
     </block>
