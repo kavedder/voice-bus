@@ -20,6 +20,7 @@
     </block>
   </link>
 
+
   <!-- Each module is in its own form, so that we can easily use
        gotos to navigate around. This is not a super clean vanilla
        call flow, but gives us more control.
@@ -29,9 +30,8 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        <!-- TODO -->
         <!-- Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away. -->
-        Hi.
+        Hi
       </prompt>
       <goto next="#StopNo" />
     </block>
@@ -60,8 +60,14 @@
 
         <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
 
-        <assign name="application.spokenStopNo" expr="stopno$.interpretation" />
-        <assign name="application.writtenStopNo" expr="convertBus(application.spokenStopNo,'foo')" />
+        <assign name="application.spokenStopNo" expr="stopno$.utterance" />
+
+        <if cond="stopno$.interpretation.number_type == 'string'">
+          <assign name="application.writtenStopNo" expr="convertNumFromStr(application.spokenStopNo,'foo')" />
+          <else />
+          <assign name="application.writtenStopNo" expr="convertNumFromDTMF(application.spokenStopNo)" />
+        </if>
+
         <assign name="application.stopUrl" expr="getStopUrl(application.writtenStopNo)" />
         <assign name="application.arrivalUrl" expr="getArrivalUrl(application.writtenStopNo)" />
 
@@ -148,16 +154,10 @@
           <goto next="main.xml#BusNo" />
 
           <else />
-
-          <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
-          <assign name="application.stopinfoUrl" expr="getStopinfoUrl(application.writtenStopNo)" />
-          <data name="doc" srcexpr="application.stopinfoUrl" />
-          <assign name="application.stopinfoData" expr="doc.documentElement" />
-          <assign name="application.stopInfo" expr="returnStopinfoInfo(application.stopinfoData)" />
-
-
-          <prompt> Here is the stop information for stop number <value expr="application.spokenStopNo" />. </prompt>
-          <value expr="application.stopInfo" />
+          <prompt>
+            Here is the stop information for stop number <value expr="application.spokenStopNo" />.
+          </prompt>
+          <submit next="stopinfo_handler.php" namelist="writtenStopNo" method="post" />
 
           <goto next="main.xml#BusNo" />
         </if>
@@ -173,7 +173,7 @@
       <grammar src="busno.grxml" type="application/grammar-xml" maxage="0" />
       <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
-        Please say or key in the bus number you are looking for, or say all buses or press star to hear all buses.
+        Please say or key in the bus number you are looking for. Say all buses, or press star, to hear all buses.
       </prompt>
 
       <noinput>
@@ -191,7 +191,12 @@
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
         <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
-        <assign name="application.writtenBusNo" expr="convertBus(application.spokenBusNo, application.busType)" />
+
+        <if cond="busno$.interpretation.number_type == 'string'">
+          <assign name="application.writtenBusNo" expr="convertNumFromStr(application.spokenBusNo, application.bus_Type)" />
+          <else />
+          <assign name="application.writtenBusNo" expr="convertNumFromDTMF(application.spokenBusNo)" />
+        </if>
 
         <data name="doc" srcexpr="application.arrivalUrl" />
         <assign name="application.arrivalXmlData" expr="doc.documentElement" />

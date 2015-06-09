@@ -24,6 +24,8 @@
       </item>
     </one-of>
     <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
+
+    <tag> out.number_type="string"; </tag>
   </rule>
 
 </grammar>

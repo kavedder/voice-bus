@@ -158,6 +158,7 @@
       </item>
 
     </item>
+    <tag> out.number_type="string"; </tag>
   </rule>
 
 </grammar>

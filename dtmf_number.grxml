@@ -17,5 +17,6 @@
         <item> * <tag> out.bus_type="all"; </tag> </item>
       </one-of>
     </item>
+    <tag> out.number_type="int"; </tag>
   </rule>
 </grammar>
