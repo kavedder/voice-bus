@@ -24,19 +24,19 @@ $keys = array();
 $elements = $dom->getElementsByTagName('td');
 $prev_is_key = False;
 foreach ($elements as $elem) {
-  $s = $elem->nodeValue;
-  $s_trimmed = trim($s);
-  if (substr($s_trimmed, -1) == ":") {
-    $keys[] = $s_trimmed;
-    $prev_is_key = True;
+    $s = $elem->nodeValue;
+    $s_trimmed = trim($s);
+    if (substr($s_trimmed, -1) == ":") {
+        $keys[] = $s_trimmed;
+        $prev_is_key = True;
     }
-  elseif ($prev_is_key) {
-    $keys[] = $s_trimmed . ". ";
-    $prev_is_key = False;
-  }
-  else {
-    $prev_is_key = False;
-  }
+    elseif ($prev_is_key) {
+        $keys[] = $s_trimmed . ". ";
+        $prev_is_key = False;
+    }
+    else {
+        $prev_is_key = False;
+    }
 }
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";

@@ -341,29 +341,8 @@ function getArrivalUrl(stopno) {
     return url;
 }
 
-function getStopinfoUrl(stopno) {
-    //var url_base = "http://stopinfo.pugetsound.onebusaway.org/busstops/1_";
-    var url_base = "stopinfo_files/";
-    var url = url_base + stopno + ".xml";
+function getUserUrl(user_id) {
+    var url_base = "user_files/";
+    var url = url_base + user_id + ".xml";
     return url;
-}
-
-
-function returnStopinfoInfo(doc) {
-    var entries = doc.getElementsByTagName("info");
-    var outstring = "";
-    var name;
-    var value;
-    var entry;
-    for (var i=0; i<entries.length; i++) {
-        entry = entries.item(i);
-        try {
-            name = entry.getElementsByTagName('name').item(0).firstChild.data;
-            value = entry.getElementsByTagName('value').item(0).firstChild.data;
-            outstring += name + " " + value + ". ";
-        }
-        catch(err) {
-        }
-    }
-    return outstring;
 }
