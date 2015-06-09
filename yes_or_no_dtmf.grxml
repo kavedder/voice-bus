@@ -1,9 +1,12 @@
 <?xml version= "1.0"?>
 <grammar xml:lang="en-US" root = "TOPLEVEL" mode="dtmf" xmlns="http://www.w3.org/2001/06/grammar">
   <rule id="TOPLEVEL" scope = "public">
-    <one-of>
-      <item> 1  <tag> out.response="yes"; </tag> </item>
-      <item> 2  <tag> out.response="no"; </tag> </item>
-    </one-of>
+    <item>
+      <one-of>
+        <item> 1  <tag> out.response="yes"; </tag> </item>
+        <item> 2  <tag> out.response="no"; </tag> </item>
+      </one-of>
+    </item>
+    <item repeat="0-1"> # </item>
   </rule>
 </grammar>
