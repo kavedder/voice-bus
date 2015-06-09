@@ -4,17 +4,17 @@
 
   <link next="#MainMenu">
     <!-- The XML grammar for the main menu. -->
-    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="0" />
+    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="999999" />
   </link>
 
   <link next="#Help">
     <!-- The XML grammar for the help menu. -->
-    <grammar src="help.grxml" type="application/grammar-xml" maxage="0" />
+    <grammar src="help.grxml" type="application/grammar-xml" maxage="999999" />
   </link>
 
   <link next="#End">
     <!-- The XML grammar for the help menu. -->
-    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
+    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="999999" />
   </link>
 
 
@@ -36,8 +36,8 @@
   <!-- BEGIN GET STOP NUMBER -->
   <form id="StopNo">
     <field name="stopno">
-      <grammar src="stopno.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="stopno.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         Please say or key in your stop number.
       </prompt>
@@ -54,7 +54,7 @@
 
       <filled namelist="stopno$.interpretation">
 
-        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="999999"/>
 
         <assign name="application.spokenStopNo" expr="stopno$.utterance" />
 
@@ -90,8 +90,8 @@
   <!-- BEGIN VERIFY STOP NUMBER -->
   <form id="VerifyStopNo">
     <field name="verifystopno">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         I heard <value expr="application.spokenStopNo" />,
         which is <value expr="application.stopLoc" />.
@@ -126,8 +126,8 @@
   <!-- BEGIN GET STOPINFO -->
   <form id="GetStopinfo">
     <field name="getstopinfo">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         Would you like to hear information about this stop?
       </prompt>
@@ -166,8 +166,8 @@
   <!-- BEGIN GET BUS NUMBER -->
   <form id="BusNo">
     <field name="busno">
-      <grammar src="busno.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="busno.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         Please say or key in the bus number you are looking for. Say all buses, or press star, to hear all buses.
       </prompt>
@@ -186,7 +186,7 @@
       <filled namelist="busno$.interpretation">
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
-        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="999999"/>
 
         <if cond="busno$.interpretation.number_type == 'string'">
           <assign name="application.writtenBusNo" expr="convertNumFromStr(application.spokenBusNo, application.bus_Type)" />
@@ -217,8 +217,8 @@
   <!-- BEGIN MORE BUSES -->
   <form id="MoreBuses">
     <field name="morebuses">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         Would you like to hear more arrivals for this stop?
       </prompt>
@@ -250,8 +250,8 @@
   <!-- BEGIN MORE STOPS -->
   <form id="MoreStops">
     <field name="morestops">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
       <prompt>
         Would you like to hear arrivals for a different stop?
       </prompt>
