@@ -3,14 +3,19 @@ $stopno = $_POST["writtenStopNo"];
 $busno = $_POST["writtenBusNo"];
 $bustype = $_POST["busType"];
 $userid = $_POST["userId"];
+$stoploc = $_POST["stopLoc"];
 
-$currarr = array($stopno, $busno, $bustype);
+$currarr = array($stopno, $busno, $bustype, $stoploc);
 
-$finame = 'user_files.json';
+$finame = 'user_profiles.json';
 
-$intext = file_get_contents($finame);
-$injson = json_decode($intext, true);
-
+if (file_exists($finame)) {
+    $intext = file_get_contents($finame);
+    $injson = json_decode($intext, true);
+}
+else {
+    $injson = array();
+}
 
 $already_exists = False;
 if (array_key_exists($userid, $injson)) {

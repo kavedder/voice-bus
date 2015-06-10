@@ -2,6 +2,7 @@
 <grammar xml:lang="en-us" root="TOPLEVEL" xmlns="http://www.w3.org/2001/06/grammar">
 
   <rule id="TOPLEVEL" scope="public">
+    <tag> out.number_type="string"; </tag>
     <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
     <one-of>
       <item> <ruleref uri="#all_buses" /> <tag> out.bus_type="all"; </tag> </item>
@@ -158,7 +159,6 @@
       </item>
 
     </item>
-    <tag> out.number_type="string"; </tag>
   </rule>
 
 </grammar>

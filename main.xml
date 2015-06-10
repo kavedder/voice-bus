@@ -23,6 +23,26 @@
        call flow, but gives us more control.
   -->
 
+  <!-- BEGIN START -->
+  <form id="Start">
+    <block>
+      <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+      <assign name="application.userId" expr="session.callerid" />
+      <!-- do we have cached info for this user? -->
+      <submit next="check_user_exists.php" namelist="userId" method="post" />
+    </block>
+  </form>
+  <!-- END START -->
+
+  <!-- BEGIN WELCOME BACK -->
+  <form id="WelcomeBack">
+    <block>
+      <prompt> Welcome back. </prompt>
+      <submit next="gen_user_options.php" namelist="userId" method="post" />
+    </block>
+  </form>
+  <!-- BEGIN WELCOME BACK -->
+
   <!-- BEGIN MAIN -->
   <form id="MainMenu">
     <block>
@@ -30,15 +50,11 @@
         Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
       </prompt>
 
-      <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
-
-      <assign name="application.userId" expr="session.callerid" />
-      <assign name="application.userUrl" expr="getUserUrl(application.userId)" />
-
-
       <goto next="#StopNo" />
     </block>
   </form>
+  <!-- END MAIN -->
+
 
   <!-- BEGIN GET STOP NUMBER -->
   <form id="StopNo">
@@ -94,6 +110,7 @@
   </form>
   <!-- END GET STOP NUMBER -->
 
+
   <!-- BEGIN VERIFY STOP NUMBER -->
   <form id="VerifyStopNo">
     <field name="verifystopno">
@@ -127,8 +144,8 @@
       </filled>
     </field>
   </form>
-
   <!-- END VERIFY STOP NUMBER -->
+
 
   <!-- BEGIN GET STOPINFO -->
   <form id="GetStopinfo">
@@ -167,8 +184,8 @@
       </filled>
     </field>
   </form>
-
   <!-- END GET STOPINFO -->
+
 
   <!-- BEGIN GET BUS NUMBER -->
   <form id="BusNo">
@@ -201,7 +218,7 @@
           <assign name="application.writtenBusNo" expr="convertNumFromDTMF(application.spokenBusNo)" />
         </if>
 
-        <submit next="add_to_user.php" namelist="writtenStopNo writtenBusNo busType userId" method="post" />
+        <submit next="add_to_user.php" namelist="writtenStopNo writtenBusNo busType userId stopLoc" method="post" />
 
         <goto next="main.xml#SayBus" />
 
@@ -209,6 +226,7 @@
     </field>
   </form>
   <!-- END GET BUS NUMBER -->
+
 
   <!-- BEGIN SAY BUS -->
   <form id="SayBus">
@@ -230,8 +248,8 @@
       </if>
     </block>
   </form>
-
   <!-- END SAY BUS -->
+
 
   <!-- BEGIN MORE BUSES -->
   <form id="MoreBuses">
@@ -263,8 +281,8 @@
       </filled>
     </field>
   </form>
-
   <!-- END MORE BUSES -->
+
 
   <!-- BEGIN MORE STOPS -->
   <form id="MoreStops">
@@ -296,11 +314,10 @@
       </filled>
     </field>
   </form>
-
   <!-- END MORE STOPS -->
 
-  <!-- BEGIN END -->
 
+  <!-- BEGIN END -->
   <form id="End">
     <block>
       <prompt>
@@ -309,11 +326,7 @@
       <disconnect />
     </block>
   </form>
-
   <!-- END END :-) -->
-
-  <!-- END MAIN -->
-
 
   <form id="Help">
     <block>
