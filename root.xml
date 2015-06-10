@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version = "2.1">
   <meta name="maintainer" content="kvedder@uw.edu"/>
-  <var name="writtenStopNo" />
-  <var name="spokenStopNo" />
-  <var name="writtenBusNo" />
-  <var name="spokenBusNo" />
-  <var name="stopUrl" />
   <var name="arrivalUrl" />
-  <var name="stopinfoUrl" />
-  <var name="stopinfoData" />
-  <var name="xmlData" />
   <var name="arrivalXmlData" />
-  <var name="isValidUrl" />
-  <var name="stopLoc" />
   <var name="busType" />
+  <var name="delopt" />
+  <var name="isValidUrl" />
+  <var name="spokenBusNo" />
+  <var name="spokenStopNo" />
+  <var name="stopinfoData" />
+  <var name="stopinfoUrl" />
+  <var name="stopLoc" />
+  <var name="stopUrl" />
+  <var name="writtenBusNo" />
+  <var name="writtenStopNo" />
+  <var name="xmlData" />
+
+    <link next="main.xml#Start">
+    <!-- The XML grammar for the main menu. -->
+    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="0" />
+  </link>
+
+  <link next="main.xml#Help">
+    <!-- The XML grammar for the help menu. -->
+    <grammar src="help.grxml" type="application/grammar-xml" maxage="0" />
+  </link>
+
+  <link next="main.xml#End">
+    <!-- The XML grammar for the help menu. -->
+    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
+  </link>
+
+  <link next="main.xml#End">
+    <!-- The XML grammar for the help menu. -->
+    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
+  </link>
+
+
 </vxml>

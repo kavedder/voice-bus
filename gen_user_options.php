@@ -68,26 +68,31 @@ echo "</grammar>\n";
 
 ?>
       <prompt bargein="true">
-        Say or key in the quick access code for the information you would like. Say "options" to hear all options, or say "main menu" to add a new number.
+        Say or key in the quick access code for the information you would like!
       </prompt>
 
       <noinput>
-        I'm sorry.
+        Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        I'm sorry.
+        I didn't quite catch that.  Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
         <reprompt/>
       </nomatch>
 
       <filled namelist="foo$.interpretation">
         <assign name="action" expr="foo$.interpretation.action" />
+        <assign name="application.delopt" expr="1" />
 
         <if cond="action=='menu'">
           <goto next="main.xml#MainMenu" />
         <elseif cond="action=='options'" />
          <submit next="read_user_options.php" namelist="userId" method="post" />
+        <elseif cond="action=='profile'" />
+         <!-- this is technically part of the profile editor, but we only want to say it once -->
+         <prompt> Welcome to the profile editor. You can say main menu at any time to go to the main menu. </prompt>
+         <submit next="edit_user_profile.php" namelist="userId delopt" method="post" />
         <else />
         <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
         <assign name="application.writtenBusNo" expr="foo$.interpretation.bus_no" />

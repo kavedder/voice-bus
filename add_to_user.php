@@ -41,11 +41,7 @@ else {
 }
 
 
-$outfile = fopen($finame, "w");
-fwrite($outfile, json_encode($injson));
-fclose($outfile);
-
-
+file_put_contents($finame, json_encode($injson));
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 ?>

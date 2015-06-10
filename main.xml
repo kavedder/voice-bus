@@ -2,22 +2,6 @@
 <vxml version = "2.1" application="root.xml">
   <meta name="maintainer" content="kvedder@uw.edu"/>
 
-  <link next="#MainMenu">
-    <!-- The XML grammar for the main menu. -->
-    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="0" />
-  </link>
-
-  <link next="#Help">
-    <!-- The XML grammar for the help menu. -->
-    <grammar src="help.grxml" type="application/grammar-xml" maxage="0" />
-  </link>
-
-  <link next="#End">
-    <!-- The XML grammar for the help menu. -->
-    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="0" />
-  </link>
-
-
   <!-- Each module is in its own form, so that we can easily use
        gotos to navigate around. This is not a super clean vanilla
        call flow, but gives us more control.
@@ -37,7 +21,7 @@
   <!-- BEGIN WELCOME BACK -->
   <form id="WelcomeBack">
     <block>
-      <prompt> Welcome back. </prompt>
+      <prompt> Welcome back to the one bus away hotline. </prompt>
       <submit next="gen_user_options.php" namelist="userId" method="post" />
     </block>
   </form>
@@ -193,16 +177,16 @@
       <grammar src="busno.grxml" type="application/grammar-xml" maxage="0" />
       <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
-        Please say or key in the bus number you are looking for. Say all buses, or press star, to hear all buses.
+        Please say or key in the bus number you are looking for.
       </prompt>
 
       <noinput>
-        I did not hear anything. Please try again.
+        Say all buses, or press star, to hear all buses.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        I did not recognize what you said. Please try again.
+        I didn't quite catch that.  Say all buses, or press star, to hear all buses.
         <reprompt/>
       </nomatch>
 
@@ -334,7 +318,7 @@
         This is a speech enabled bus information service. You will be guided through the steps of setting your location
         and desired routes. Let's start at the beginning.
       </prompt>
-      <goto next="#MainMenu" />
+      <goto next="#Start" />
     </block>
   </form>
 

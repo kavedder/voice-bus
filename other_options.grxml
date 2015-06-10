@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xml:lang="en-US" root = "TOPLEVEL" mode="voice" xmlns="http://www.w3.org/2001/06/grammar">
+
   <rule id="TOPLEVEL" scope = "public">
     <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
     <item>
       <one-of>
-        <item> options <tag> out.action="options"; </tag> </item>
-        <item> list options <tag> out.action="options"; </tag> </item>
-        <item> list <tag> out.action="options"; </tag> </item>
-        <item> menu <tag> out.action="menu"; </tag> </item>
-        <item> main menu <tag> out.action="menu"; </tag> </item>
+        <item> <ruleref uri="#options" /> <tag> out.action="options"; </tag> </item>
+        <item> <ruleref uri="#menu" /> <tag> out.action="menu"; </tag> </item>
+        <item> <ruleref uri="#profile" /> <tag> out.action="profile"; </tag> </item>
       </one-of>
     </item>
   </rule>
+
+  <rule id="options" scope="public">
+    <one-of>
+      <item> options </item>
+      <item> list options </item>
+      <item> all options </item>
+      <item> list </item>
+    </one-of>
+  </rule>
+
+  <rule id="menu" scope="public">
+    <one-of>
+      <item> menu </item>
+      <item> main menu </item>
+    </one-of>
+  </rule>
+
+  <rule id="profile" scope="public">
+    <one-of>
+      <item> manage </item>
+      <item> manage profile </item>
+      <item> profile </item>
+      <item> preferences </item>
+    </one-of>
+  </rule>
+
 </grammar>
