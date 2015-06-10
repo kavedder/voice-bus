@@ -14,7 +14,7 @@ echo "    <block>\n";
 if (count($injson[$userid]) == 0) {
     echo "<prompt> You currently have no pre recorded options. </prompt>\n";
     echo "<goto next=\"main.xml#MainMenu\" />\n";
-}
+        }
 else {
     foreach ($injson[$userid] as $dig => $opt) {
         $stopno = $opt[0];
@@ -32,6 +32,6 @@ else {
     echo "<submit next=\"gen_user_options.php\" namelist=\"userId\" method=\"post\" />\n";
 }
 ?>
-  </block>
-  </form>
+</block>
+</form>
 </vxml>

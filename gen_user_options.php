@@ -67,17 +67,17 @@ echo "  </rule>\n";
 echo "</grammar>\n";
 
 ?>
-      <prompt bargein="true">
-        Say or key in the quick access code for the information you would like!
-      </prompt>
+<prompt bargein="true">
+    Say or key in the quick access code for the information you would like!
+    </prompt>
 
-      <noinput>
-        Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
-        <reprompt/>
-      </noinput>
+    <noinput>
+    Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
+    <reprompt/>
+    </noinput>
 
-      <nomatch>
-        I didn't quite catch that.  Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
+    <nomatch>
+    I didn't quite catch that.  Say "options" to hear all options, or "profile" to edit your profile, or say "main menu" to add a new number.
         <reprompt/>
       </nomatch>
 

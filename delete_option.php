@@ -32,7 +32,7 @@ echo "<assign name=\"application.delopt\" expr=\"" . $delopt . "\" />\n";
 if (!array_key_exists($userid, $injson)) {
     echo "<prompt> You have no more pre recorded options. </prompt>\n";
     echo "<goto next=\"main.xml#MainMenu\" />\n";
-}
+        }
 elseif ((int) $delopt > 9) {
     echo "<prompt> You have no more pre recorded options. </prompt>\n";
     echo "<submit next=\"gen_user_options.php\" namelist=\"userId \" method=\"post\" />\n";
@@ -42,6 +42,6 @@ else {
 }
 
 ?>
-  </block>
-  </form>
+</block>
+</form>
 </vxml>

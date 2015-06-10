@@ -61,7 +61,7 @@ else {
         // echo "<submit next=\"gen_user_options.php\" namelist=\"userId \" method=\"post\" />\n";
         echo "<goto next=\"main.xml#Start\" />\n";
 
-    }
+            }
     else {
         echo "<submit next=\"edit_user_profile.php\" namelist=\"userId delopt\" method=\"post\" />\n";
     }
@@ -72,5 +72,5 @@ else {
 
 ?>
 
-  </form>
+</form>
 </vxml>

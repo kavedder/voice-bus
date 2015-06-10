@@ -21,9 +21,9 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 ?>
 
 <vxml version="2.1" application="root.xml">
-    <form id="thing">
-    <block>
-    <?=$goto_string?>
-    </block>
-    </form>
-    </vxml>
+                      <form id="thing">
+                      <block>
+                      <?=$goto_string?>
+                      </block>
+                      </form>
+                      </vxml>

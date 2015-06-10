@@ -43,16 +43,16 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 ?>
 
 <vxml version="2.1" application="root.xml">
-  <form id="thing">
+    <form id="thing">
     <block>
-      <prompt>
-        <?php
-        foreach ($keys as $key) {
-                echo htmlspecialchars($key);
-                }
-        ?> .
-      </prompt>
-      <goto next="main.xml#BusNo" />
+    <prompt>
+<?php
+    foreach ($keys as $key) {
+        echo htmlspecialchars($key);
+    }
+?> .
+</prompt>
+<goto next="main.xml#BusNo" />
     </block>
-  </form>
-</vxml>
+    </form>
+    </vxml>
