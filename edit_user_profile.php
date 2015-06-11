@@ -1,4 +1,15 @@
 <?php
+
+/*
+We get looped into this file with delopt 1-9. This seems crazy, but
+is so far the simplest way I can think of to go about doing this. We
+need to keep state of what options we've already tried.
+
+The giant if/else blocks are because <assign>s have to be children of
+<field>s or <block>s, and which one we use depends on what we're doing.
+I think it probably can be shortened, but it works for now.
+*/
+
 $userid = $_POST["userId"];
 $delopt = $_POST["delopt"];
 

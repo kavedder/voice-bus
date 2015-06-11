@@ -4,7 +4,12 @@ $finame = 'user_profiles.json';
 
 if (file_exists($finame)) {
     $intext = file_get_contents($finame);
-    $injson = json_decode($intext, true);
+    if (strlen($intext) == 0) {
+        $injson = array();
+    }
+    else {
+        $injson = json_decode($intext, true);
+    }
 }
 else {
     $injson = array();

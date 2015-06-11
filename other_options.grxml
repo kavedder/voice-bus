@@ -14,17 +14,24 @@
 
   <rule id="options" scope="public">
     <one-of>
+      <item> favorite </item>
+      <item> favorites </item>
       <item> options </item>
       <item> list options </item>
       <item> all options </item>
       <item> list </item>
+      <item> favorites list </item>
+      <item> list favorites </item>
     </one-of>
   </rule>
 
   <rule id="menu" scope="public">
     <one-of>
-      <item> menu </item>
-      <item> main menu </item>
+      <item> new </item>
+      <item> new search </item>
+      <item> add new </item>
+      <item> add new number </item>
+      <item> add a new number </item>
     </one-of>
   </rule>
 
@@ -34,6 +41,8 @@
       <item> manage profile </item>
       <item> profile </item>
       <item> preferences </item>
+      <item> edit </item>
+      <item> edit favorites </item>
     </one-of>
   </rule>
 

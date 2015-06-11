@@ -31,7 +31,7 @@
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+        Welcome to the interactive bus information hotline, powered by One Bus Away.
       </prompt>
 
       <goto next="#StopNo" />
