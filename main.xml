@@ -2,42 +2,49 @@
 <vxml version = "2.1" application="root.xml">
   <meta name="maintainer" content="kvedder@uw.edu"/>
 
-  <link next="#MainMenu">
-    <!-- The XML grammar for the main menu. -->
-    <grammar src="main_menu.grxml" type="application/grammar-xml" maxage="999999" />
-  </link>
-
-  <link next="#Help">
-    <!-- The XML grammar for the help menu. -->
-    <grammar src="help.grxml" type="application/grammar-xml" maxage="999999" />
-  </link>
-
-  <link next="#End">
-    <!-- The XML grammar for the help menu. -->
-    <grammar src="goodbye.grxml" type="application/grammar-xml" maxage="999999" />
-  </link>
-
-
   <!-- Each module is in its own form, so that we can easily use
        gotos to navigate around. This is not a super clean vanilla
        call flow, but gives us more control.
   -->
 
+  <!-- BEGIN START -->
+  <form id="Start">
+    <block>
+      <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+      <assign name="application.userId" expr="session.callerid" />
+      <!-- do we have cached info for this user? -->
+      <submit next="check_user_exists.php" namelist="userId" method="post" />
+    </block>
+  </form>
+  <!-- END START -->
+
+  <!-- BEGIN WELCOME BACK -->
+  <form id="WelcomeBack">
+    <block>
+      <prompt> Welcome back to the one bus away hotline. </prompt>
+      <submit next="gen_user_options.php" namelist="userId" method="post" />
+    </block>
+  </form>
+  <!-- BEGIN WELCOME BACK -->
+
   <!-- BEGIN MAIN -->
   <form id="MainMenu">
     <block>
       <prompt bargein="true">
-        Welcome to the interactive bus information hotline, powered by Puget Sound Transit and One Bus Away.
+        Welcome to the interactive bus information hotline, powered by One Bus Away.
       </prompt>
+
       <goto next="#StopNo" />
     </block>
   </form>
+  <!-- END MAIN -->
+
 
   <!-- BEGIN GET STOP NUMBER -->
   <form id="StopNo">
     <field name="stopno">
-      <grammar src="stopno.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="stopno.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Please say or key in your stop number.
       </prompt>
@@ -54,7 +61,7 @@
 
       <filled namelist="stopno$.interpretation">
 
-        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="999999"/>
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
 
         <assign name="application.spokenStopNo" expr="stopno$.utterance" />
 
@@ -87,11 +94,12 @@
   </form>
   <!-- END GET STOP NUMBER -->
 
+
   <!-- BEGIN VERIFY STOP NUMBER -->
   <form id="VerifyStopNo">
     <field name="verifystopno">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         I heard <value expr="application.spokenStopNo" />,
         which is <value expr="application.stopLoc" />.
@@ -120,14 +128,14 @@
       </filled>
     </field>
   </form>
-
   <!-- END VERIFY STOP NUMBER -->
+
 
   <!-- BEGIN GET STOPINFO -->
   <form id="GetStopinfo">
     <field name="getstopinfo">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Would you like to hear information about this stop?
       </prompt>
@@ -160,25 +168,25 @@
       </filled>
     </field>
   </form>
-
   <!-- END GET STOPINFO -->
+
 
   <!-- BEGIN GET BUS NUMBER -->
   <form id="BusNo">
     <field name="busno">
-      <grammar src="busno.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="busno.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="dtmf_number.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
-        Please say or key in the bus number you are looking for. Say all buses, or press star, to hear all buses.
+        Please say or key in the bus number you are looking for.
       </prompt>
 
       <noinput>
-        I did not hear anything. Please try again.
+        Say all buses, or press star, to hear all buses.
         <reprompt/>
       </noinput>
 
       <nomatch>
-        I did not recognize what you said. Please try again.
+        I didn't quite catch that.  Say all buses, or press star, to hear all buses.
         <reprompt/>
       </nomatch>
 
@@ -186,39 +194,52 @@
       <filled namelist="busno$.interpretation">
         <assign name="application.busType" expr="busno$.interpretation.bus_type" />
         <assign name="application.spokenBusNo" expr="busno$.utterance" />
-        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="999999"/>
+        <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
 
         <if cond="busno$.interpretation.number_type == 'string'">
-          <assign name="application.writtenBusNo" expr="convertNumFromStr(application.spokenBusNo, application.bus_Type)" />
+          <assign name="application.writtenBusNo" expr="convertNumFromStr(application.spokenBusNo, application.busType)" />
           <else />
           <assign name="application.writtenBusNo" expr="convertNumFromDTMF(application.spokenBusNo)" />
         </if>
 
-        <data name="doc" srcexpr="application.arrivalUrl" />
-        <assign name="application.arrivalXmlData" expr="doc.documentElement" />
-        <assign name="routelist" expr="getRoutes(application.arrivalXmlData, application.writtenBusNo, application.busType)" />
+        <submit next="add_to_user.php" namelist="writtenStopNo writtenBusNo busType userId stopLoc" method="post" />
 
-        <if cond="application.busType=='all'">
-          <prompt>
-            <value expr="routelist" />
-          </prompt>
-          <goto next="main.xml#MoreStops" />
-          <else />
-          <prompt>
-            <value expr="routelist" />
-          </prompt>
-          <goto next="main.xml#MoreBuses" />
-        </if>
+        <goto next="main.xml#SayBus" />
+
       </filled>
     </field>
   </form>
   <!-- END GET BUS NUMBER -->
 
+
+  <!-- BEGIN SAY BUS -->
+  <form id="SayBus">
+    <block>
+      <script src="javascript.js" fetchhint="prefetch" fetchtimeout="10s" maxage="0"/>
+
+      <data name="doc" srcexpr="application.arrivalUrl" />
+      <assign name="application.arrivalXmlData" expr="doc.documentElement" />
+      <assign name="routelist" expr="getRoutes(application.arrivalXmlData, application.writtenBusNo, application.busType)" />
+
+      <prompt>
+        <value expr="routelist" />
+      </prompt>
+
+      <if cond="application.busType=='all'">
+        <goto next="main.xml#MoreStops" />
+        <else />
+        <goto next="main.xml#MoreBuses" />
+      </if>
+    </block>
+  </form>
+  <!-- END SAY BUS -->
+
+
   <!-- BEGIN MORE BUSES -->
   <form id="MoreBuses">
     <field name="morebuses">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Would you like to hear more arrivals for this stop?
       </prompt>
@@ -244,14 +265,14 @@
       </filled>
     </field>
   </form>
-
   <!-- END MORE BUSES -->
+
 
   <!-- BEGIN MORE STOPS -->
   <form id="MoreStops">
     <field name="morestops">
-      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="999999" />
-      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="999999" />
+      <grammar src="yes_or_no.grxml" type="application/grammar-xml" maxage="0" />
+      <grammar src="yes_or_no_dtmf.grxml" type="application/grammar-xml" maxage="0" />
       <prompt>
         Would you like to hear arrivals for a different stop?
       </prompt>
@@ -277,11 +298,10 @@
       </filled>
     </field>
   </form>
-
   <!-- END MORE STOPS -->
 
-  <!-- BEGIN END -->
 
+  <!-- BEGIN END -->
   <form id="End">
     <block>
       <prompt>
@@ -290,11 +310,7 @@
       <disconnect />
     </block>
   </form>
-
   <!-- END END :-) -->
-
-  <!-- END MAIN -->
-
 
   <form id="Help">
     <block>
@@ -302,7 +318,7 @@
         This is a speech enabled bus information service. You will be guided through the steps of setting your location
         and desired routes. Let's start at the beginning.
       </prompt>
-      <goto next="#MainMenu" />
+      <goto next="#Start" />
     </block>
   </form>
 

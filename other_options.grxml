@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xml:lang="en-US" root = "TOPLEVEL" mode="voice" xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="TOPLEVEL" scope = "public">
+    <item repeat="0-1"> <ruleref special="GARBAGE"/> </item>
+    <item>
+      <one-of>
+        <item> <ruleref uri="#options" /> <tag> out.action="options"; </tag> </item>
+        <item> <ruleref uri="#menu" /> <tag> out.action="menu"; </tag> </item>
+        <item> <ruleref uri="#profile" /> <tag> out.action="profile"; </tag> </item>
+      </one-of>
+    </item>
+  </rule>
+
+  <rule id="options" scope="public">
+    <one-of>
+      <item> favorite </item>
+      <item> favorites </item>
+      <item> options </item>
+      <item> list options </item>
+      <item> all options </item>
+      <item> list </item>
+      <item> favorites list </item>
+      <item> list favorites </item>
+    </one-of>
+  </rule>
+
+  <rule id="menu" scope="public">
+    <one-of>
+      <item> new </item>
+      <item> new search </item>
+      <item> add new </item>
+      <item> add new number </item>
+      <item> add a new number </item>
+    </one-of>
+  </rule>
+
+  <rule id="profile" scope="public">
+    <one-of>
+      <item> manage </item>
+      <item> manage profile </item>
+      <item> profile </item>
+      <item> preferences </item>
+      <item> edit </item>
+      <item> edit favorites </item>
+    </one-of>
+  </rule>
+
+</grammar>

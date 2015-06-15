@@ -148,9 +148,6 @@ function convertNumFromDTMF(num) {
     return converted;
 }
 
-
-
-
 function getStatus(doc) {
     var response = doc.getElementsByTagName("text").item(0).firstChild.data;
     if ( response == "OK" ) {
@@ -339,31 +336,4 @@ function getArrivalUrl(stopno) {
     var url_base = "http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_";
     var url = url_base + stopno + ".xml?key=" + api_key;
     return url;
-}
-
-function getStopinfoUrl(stopno) {
-    //var url_base = "http://stopinfo.pugetsound.onebusaway.org/busstops/1_";
-    var url_base = "stopinfo_files/";
-    var url = url_base + stopno + ".xml";
-    return url;
-}
-
-
-function returnStopinfoInfo(doc) {
-    var entries = doc.getElementsByTagName("info");
-    var outstring = "";
-    var name;
-    var value;
-    var entry;
-    for (var i=0; i<entries.length; i++) {
-        entry = entries.item(i);
-        try {
-            name = entry.getElementsByTagName('name').item(0).firstChild.data;
-            value = entry.getElementsByTagName('value').item(0).firstChild.data;
-            outstring += name + " " + value + ". ";
-        }
-        catch(err) {
-        }
-    }
-    return outstring;
 }
